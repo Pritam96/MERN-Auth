@@ -5,7 +5,7 @@ import generateToken from "../utils/generateToken.js";
 const authUser = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user && user.matchPassword(password)) {
+  if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
     return res.status(201).json({
       _id: user._id,
